@@ -1,0 +1,60 @@
+package org.chasetag;
+
+import java.io.*;
+import java.net.*;
+import java.nio.ByteBuffer;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class MulticastClient {
+    private Socket socket;
+    private DataOutputStream out;
+    private MulticastSocket udpSocket;
+    private InetAddress group;
+    private Map<Integer, Triangle> players = new ConcurrentHashMap<>();
+    private int localPort;
+
+    public MulticastClient(String serverAddress, int tcpPort, int udpPort) throws IOException {
+        socket = new Socket(serverAddress, tcpPort);
+        out = new DataOutputStream(socket.getOutputStream());
+
+        group = InetAddress.getByName(Configuration.getInstance().getMULTICAST_GROUP());
+        udpSocket = new MulticastSocket(udpPort);
+        udpSocket.joinGroup(group);
+        localPort = socket.getLocalPort();
+
+        new Thread(this::receiveUDP).start();
+    }
+
+    public Map<Integer, Triangle> getPlayers() {
+        return players;
+    }
+
+    public void sendPosition(float x, float y) {
+        try {
+            out.writeUTF(x + "," + y);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void receiveUDP() {
+        byte[] buffer = new byte[1024];
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
+        while (true) {
+            try {
+                udpSocket.receive(packet);
+                ByteBuffer byteBuffer = ByteBuffer.wrap(packet.getData(), 0, packet.getLength());
+                while (byteBuffer.remaining() >= 12) {
+                    float x = byteBuffer.getFloat();
+                    float y = byteBuffer.getFloat();
+                    int port = byteBuffer.getInt();
+                    players.computeIfAbsent(port, k -> new Triangle(0, 0)).setPosition(x, y);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
