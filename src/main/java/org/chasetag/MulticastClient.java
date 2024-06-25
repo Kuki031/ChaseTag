@@ -13,6 +13,7 @@ public class MulticastClient {
     private InetAddress group;
     private Map<Integer, Triangle> players = new ConcurrentHashMap<>();
     private int localPort;
+    private boolean running = true;
 
     public MulticastClient(String serverAddress, int tcpPort, int udpPort) throws IOException {
         socket = new Socket(serverAddress, tcpPort);
@@ -38,11 +39,22 @@ public class MulticastClient {
         }
     }
 
+    public void disconnect() {
+        running = false;
+        try {
+            out.writeUTF("disconnect");
+            socket.close();
+            udpSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void receiveUDP() {
         byte[] buffer = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 
-        while (true) {
+        while (running) {
             try {
                 udpSocket.receive(packet);
                 ByteBuffer byteBuffer = ByteBuffer.wrap(packet.getData(), 0, packet.getLength());
@@ -53,7 +65,8 @@ public class MulticastClient {
                     players.computeIfAbsent(port, k -> new Triangle(0, 0)).setPosition(x, y);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+
+                System.out.println("UDP socket closed.");
             }
         }
     }

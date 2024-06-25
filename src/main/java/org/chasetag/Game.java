@@ -25,10 +25,7 @@ public class Game {
         init();
         loop();
 
-        glfwFreeCallbacks(window);
-        glfwDestroyWindow(window);
-        glfwTerminate();
-        Objects.requireNonNull(glfwSetErrorCallback(null)).free();
+        cleanup();
     }
 
     private void init() {
@@ -54,6 +51,8 @@ public class Game {
         if (window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
 
+        glfwSetWindowCloseCallback(window, this::onWindowClose);
+
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1);
         glfwShowWindow(window);
@@ -65,12 +64,12 @@ public class Game {
         while (!glfwWindowShouldClose(window)) {
             glfwPollEvents();
             myTriangle.processInput(window);
+            myTriangle.wrapAroundEdges();
             render();
             socketHandler.sendPosition(myTriangle.getxPos(), myTriangle.getyPos());
             glfwSwapBuffers(window);
         }
     }
-
 
     private void render() {
         glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
@@ -83,5 +82,17 @@ public class Game {
         }
 
         myTriangle.render();
+    }
+    private void cleanup() {
+        glfwFreeCallbacks(window);
+        glfwDestroyWindow(window);
+        glfwTerminate();
+        Objects.requireNonNull(glfwSetErrorCallback(null)).free();
+
+        socketHandler.disconnect();
+    }
+
+    private void onWindowClose(long window) {
+        glfwSetWindowShouldClose(window, true);
     }
 }

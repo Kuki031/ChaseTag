@@ -16,6 +16,10 @@ public class MulticastServerThread {
         return clients;
     }
 
+    public static void removeClient(ClientHandler clientHandler) {
+        clients.remove(clientHandler);
+    }
+
     public void startServer() {
         ExecutorService pool = Executors.newFixedThreadPool(10);
 

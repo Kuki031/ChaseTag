@@ -37,6 +37,13 @@ public class Triangle {
         if (glfwGetKey(window, playerKeys[3]) == GLFW_PRESS) this.setPosition(this.getxPos() + velocity, this.getyPos());
     }
 
+    public void wrapAroundEdges() {
+        if (this.xPos < -1.0f) this.xPos = 1.0f;
+        if (this.xPos > 1.0f) this.xPos = -1.0f;
+        if (this.yPos > 1.0f) this.yPos = -1.0f;
+        if (this.yPos < -1.0f) this.yPos = 1.0f;
+    }
+
     public void render() {
         GL11.glPushMatrix();
         GL11.glTranslatef(xPos, yPos, 0);
