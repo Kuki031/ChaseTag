@@ -7,6 +7,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Triangle {
     private float xPos;
     private float yPos;
+    private String role;
     private static int[] playerKeys = Configuration.getInstance().getPlayerKeys();
     private static float max_window = Configuration.getInstance().getMAX_WINDOW();
     private float xVelocity = 0;
@@ -14,9 +15,10 @@ public class Triangle {
     private float acceleration = 0.0001f;
     private float maxVelocity = 0.02f;
 
-    public Triangle(float xPos, float yPos) {
+    public Triangle(float xPos, float yPos, String role) {
         this.xPos = xPos;
         this.yPos = yPos;
+        this.role = role;
     }
 
     public void setPosition(float x, float y) {
@@ -32,13 +34,12 @@ public class Triangle {
         return yPos;
     }
 
-
     public void processInput(long window) {
         if (glfwGetKey(window, playerKeys[0]) == GLFW_PRESS) {
-            //Check if yVelocity + acceleration < maxVelocity => cap velocity at maxVelocity
+            // Check if yVelocity + acceleration < maxVelocity => cap velocity at maxVelocity
             yVelocity = Math.min(yVelocity + acceleration, maxVelocity);
         } else if (yVelocity > 0) {
-            //If yVelocity is > 0 (npr. 1.2f), decelerate until you reach 0 (cap velocity at 0)
+            // If yVelocity is > 0, decelerate until you reach 0 (cap velocity at 0)
             yVelocity = Math.max(yVelocity - acceleration, 0);
         }
 
@@ -62,22 +63,25 @@ public class Triangle {
 
         this.setPosition(this.getxPos() + xVelocity, this.getyPos() + yVelocity);
     }
+
     public void wrapAroundEdges() {
         if (this.xPos < -max_window) this.xPos = max_window;
         if (this.xPos > max_window) this.xPos = -max_window;
-        if (this.yPos > max_window) this.yPos = -max_window;
         if (this.yPos < -max_window) this.yPos = max_window;
+        if (this.yPos > max_window) this.yPos = -max_window;
     }
 
     public void render() {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(xPos, yPos, 0);
-        GL11.glColor3f(0.5f, 1, 1); //boja shipa
+        if ("Hunter".equals(role)) {
+            GL11.glColor3f(0.0f, 1.0f, 0.0f); // Green for Hunter
+        } else if ("Fox".equals(role)) {
+            GL11.glColor3f(1.0f, 0.5f, 0.0f); // Orange for Fox
+        }
+
         GL11.glBegin(GL11.GL_TRIANGLES);
-        GL11.glVertex2f(-0.05f, -0.05f);
-        GL11.glVertex2f(0.05f, -0.05f);
-        GL11.glVertex2f(0, 0.05f);
+        GL11.glVertex2f(this.xPos, this.yPos + 0.05f);
+        GL11.glVertex2f(this.xPos - 0.05f, this.yPos - 0.05f);
+        GL11.glVertex2f(this.xPos + 0.05f, this.yPos - 0.05f);
         GL11.glEnd();
-        GL11.glPopMatrix();
     }
 }

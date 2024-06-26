@@ -36,7 +36,8 @@ public class Game {
             System.exit(1);
         }
 
-        myTriangle = new Triangle(0, 0);
+        String myRole = Math.random() < 0.5 ? "Hunter" : "Fox";
+        myTriangle = new Triangle(0, 0, myRole);
 
         GLFWErrorCallback.createPrint(System.err).set();
 
@@ -80,8 +81,6 @@ public class Game {
         for (Triangle triangle : players.values()) {
             triangle.render();
         }
-
-        myTriangle.render();
     }
     private void cleanup() {
         glfwFreeCallbacks(window);
