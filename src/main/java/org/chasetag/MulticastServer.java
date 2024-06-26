@@ -16,9 +16,7 @@ public class MulticastServer {
 
     public void start() {
         MulticastServerThread serverSocketHandler = new MulticastServerThread();
-
         new Thread(this::startUdpBroadcast).start();
-
         serverSocketHandler.startServer();
     }
 
@@ -29,8 +27,8 @@ public class MulticastServer {
                 byte[] buffer = new byte[BUFFER_SIZE];
                 int pos = 0;
                 for (ClientHandler client : clients) {
-                    System.arraycopy(client.getPositionData(), 0, buffer, pos, 12);
-                    pos += 12;
+                    System.arraycopy(client.getPositionData(), 0, buffer, pos, 20);
+                    pos += 20;
                 }
                 DatagramPacket packet = new DatagramPacket(buffer, pos, InetAddress.getByName(Configuration.getInstance().getMULTICAST_SERVER()), UDP_PORT);
                 udpSocket.send(packet);

@@ -64,11 +64,14 @@ public class MulticastClient {
                     players.remove(port);
                 } else {
                     // This is a position update packet
-                    while (byteBuffer.remaining() >= 12) {
+                    while (byteBuffer.remaining() >= 20) {
                         float x = byteBuffer.getFloat();
                         float y = byteBuffer.getFloat();
                         int port = byteBuffer.getInt();
-                        players.computeIfAbsent(port, k -> new Triangle(0, 0)).setPosition(x, y);
+                        byte[] roleBytes = new byte[8];
+                        byteBuffer.get(roleBytes);
+                        String role = new String(roleBytes).trim();
+                        players.computeIfAbsent(port, k -> new Triangle(0, 0, role)).setPosition(x, y);
                     }
                 }
             } catch (IOException e) {

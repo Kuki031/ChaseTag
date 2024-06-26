@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="2c47dcd0-859d-4467-9710-d2a440668c46" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Configuration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,14 +41,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.chasetag [:Game.main()].executor": "Run",
-    "Gradle.chasetag [:MulticastServer.main()].executor": "Run",
-    "git-widget-placeholder": "feature/game__mechanics",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.chasetag [:Game.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.chasetag [:MulticastServer.main()].executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/game__mechanics&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.Game">
     <configuration name="Client" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.chasetag.Client" />
