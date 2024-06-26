@@ -1,8 +1,8 @@
 package org.chasetag;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -18,6 +18,24 @@ public class MulticastServerThread {
 
     public static void removeClient(ClientHandler clientHandler) {
         clients.remove(clientHandler);
+        notifyClientDisconnection(clientHandler);
+    }
+
+    private static void notifyClientDisconnection(ClientHandler clientHandler) {
+        // Notify other clients about the disconnection
+        try {
+            DatagramSocket udpSocket = new DatagramSocket();
+            ByteBuffer buffer = ByteBuffer.allocate(4);
+            buffer.putInt(clientHandler.getSocket().getPort());
+            byte[] data = buffer.array();
+            DatagramPacket packet = new DatagramPacket(data, data.length,
+                    InetAddress.getByName(Configuration.getInstance().getMULTICAST_SERVER()),
+                    Configuration.getInstance().getUDP_PORT());
+            udpSocket.send(packet);
+            udpSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void startServer() {

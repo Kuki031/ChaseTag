@@ -48,11 +48,15 @@ public class ClientHandler implements Runnable {
             disconnect();
         }
     }
+    public Socket getSocket() {
+        return socket;
+    }
 
     public void disconnect() {
         running = false;
         try {
             socket.close();
+            MulticastServerThread.removeClient(this); // Notify the server to remove this client
         } catch (IOException e) {
             e.printStackTrace();
         }
