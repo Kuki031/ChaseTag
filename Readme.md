@@ -9,7 +9,7 @@
 <p>- Render all players on all connected clients ✔️</p>
 <p>- Fix render issue with multiple players ✔️</p>
 <p>- Kill Client process when player closes the game window -> disconnect gracefully from server ✔️</p>
-<p>- Kill client process when player closes the game window -> remove his ship from board (stop rendering) ❌</p>
+<p>- Kill client process when player closes the game window -> remove his ship from battlefield  ✔️</p>
 <br>
 <h3>Game mechanics</h3>
 <p>- Player movement with arrow keys ✔️</p>
