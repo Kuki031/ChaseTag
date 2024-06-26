@@ -58,14 +58,20 @@ public class MulticastClient {
             try {
                 udpSocket.receive(packet);
                 ByteBuffer byteBuffer = ByteBuffer.wrap(packet.getData(), 0, packet.getLength());
-                while (byteBuffer.remaining() >= 12) {
-                    float x = byteBuffer.getFloat();
-                    float y = byteBuffer.getFloat();
+                if (byteBuffer.remaining() == 4) {
+                    // This is a disconnection packet
                     int port = byteBuffer.getInt();
-                    players.computeIfAbsent(port, k -> new Triangle(0, 0)).setPosition(x, y);
+                    players.remove(port);
+                } else {
+                    // This is a position update packet
+                    while (byteBuffer.remaining() >= 12) {
+                        float x = byteBuffer.getFloat();
+                        float y = byteBuffer.getFloat();
+                        int port = byteBuffer.getInt();
+                        players.computeIfAbsent(port, k -> new Triangle(0, 0)).setPosition(x, y);
+                    }
                 }
             } catch (IOException e) {
-
                 System.out.println("UDP socket closed.");
             }
         }
