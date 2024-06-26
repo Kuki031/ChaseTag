@@ -26,7 +26,6 @@ public class Configuration {
     private final int WIDTH = 800;
     private final int HEIGHT = 600;
     private final float MAX_WINDOW = 1.0f;
-    private final float VELOCITY = 0.02f;
     private final String GAME_TITLE = "ChaseTag";
     private final int[] playerKeys = {GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_LEFT, GLFW_KEY_RIGHT};
 
@@ -41,10 +40,6 @@ public class Configuration {
 
     public float getMAX_WINDOW() {
         return MAX_WINDOW;
-    }
-
-    public float getVELOCITY() {
-        return VELOCITY;
     }
 
     public int[] getPlayerKeys() {

@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2c47dcd0-859d-4467-9710-d2a440668c46" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastServerThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Configuration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +42,7 @@
   "keyToString": {
     "Gradle.chasetag [:Game.main()].executor": "Run",
     "Gradle.chasetag [:MulticastServer.main()].executor": "Run",
-    "git-widget-placeholder": "feature/multiplayer",
+    "git-widget-placeholder": "feature/game__mechanics",
     "kotlin-language-version-configured": "true"
   }
 }]]></component>
