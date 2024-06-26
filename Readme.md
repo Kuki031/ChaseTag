@@ -13,7 +13,7 @@
 <br>
 <h3>Game mechanics</h3>
 <p>- Player movement with arrow keys ✔️</p>
-<p>- Acceleration and deceleration for movement ❌</p>
+<p>- Acceleration and deceleration for movement ✔️</p>
 <p>- Add ship wrapping around screen ✔️</p>
 <p>- Separate players into Hunters and Fox (X number of Hunters)❌</p>
 <p>- Hunters (Green outline color or just green color), Fox (Orange outline color or just orange color) ❌</p>
