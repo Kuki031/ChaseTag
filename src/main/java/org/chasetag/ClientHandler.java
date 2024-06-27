@@ -11,12 +11,15 @@ public class ClientHandler implements Runnable {
     private float x = 0, y = 0;
     private boolean running = true;
     private String role;
+
     public ClientHandler(Socket socket) {
         this.socket = socket;
         try {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
             role = MulticastServerThread.getNumberOfFoxes() == 0 ? "Fox" : "Hunter";
+            //posalji role clientu
+            sendRoleToClient();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,6 +38,11 @@ public class ClientHandler implements Runnable {
 
     public String getRole() {
         return role;
+    }
+
+    private void sendRoleToClient() throws IOException {
+        out.writeUTF(role);
+        out.flush();
     }
 
     @Override
