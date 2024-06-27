@@ -24,7 +24,6 @@ public class Game {
     public void run() {
         init();
         loop();
-
         cleanup();
     }
 
@@ -35,10 +34,17 @@ public class Game {
             e.printStackTrace();
             System.exit(1);
         }
+        //cekaj da se klijentu posalje role sa servera
+        while (socketHandler.getRole() == null) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
         String myRole = socketHandler.getRole();
         myTriangle = new Triangle(0, 0, myRole);
-
 
         GLFWErrorCallback.createPrint(System.err).set();
 
@@ -64,11 +70,13 @@ public class Game {
 
     private void loop() {
         while (!glfwWindowShouldClose(window)) {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glfwPollEvents();
             myTriangle.processInput(window);
             myTriangle.wrapAroundEdges();
             render();
             socketHandler.sendPosition(myTriangle.getxPos(), myTriangle.getyPos());
+            checkCollisions();
             glfwSwapBuffers(window);
         }
     }
@@ -83,6 +91,7 @@ public class Game {
             triangle.render();
         }
     }
+
     private void cleanup() {
         glfwFreeCallbacks(window);
         glfwDestroyWindow(window);
@@ -94,5 +103,17 @@ public class Game {
 
     private void onWindowClose(long window) {
         glfwSetWindowShouldClose(window, true);
+    }
+
+    private void checkCollisions() {
+        if (myTriangle.getRole().equals("Fox")) {
+            Map<Integer, Triangle> players = socketHandler.getPlayers();
+            for (Triangle player : players.values()) {
+                if (player.getRole().equals("Hunter") && myTriangle.checkCollision(player)) {
+                    System.out.println("Fox has been caught.");
+                    break;
+                }
+            }
+        }
     }
 }

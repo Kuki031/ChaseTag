@@ -41,10 +41,10 @@ public class Triangle {
 
     public void processInput(long window) {
         if (glfwGetKey(window, playerKeys[0]) == GLFW_PRESS) {
-            // Check if yVelocity + acceleration < maxVelocity => cap velocity at maxVelocity
+            // Check if yVelocity + acceleration < maxVelocity => stop accelerating at maxVelocity
             yVelocity = Math.min(yVelocity + acceleration, maxVelocity);
         } else if (yVelocity > 0) {
-            // If yVelocity is > 0, decelerate until you reach 0 (cap velocity at 0)
+            // If yVelocity is > 0, decelerate until you reach 0 (stop decelerating at 0)
             yVelocity = Math.max(yVelocity - acceleration, 0);
         }
 
@@ -78,9 +78,9 @@ public class Triangle {
 
     public void render() {
         if (this.role.equals("Hunter")) {
-            GL11.glColor3f(0.0f, 1.0f, 0.0f); // Green for Hunter
+            GL11.glColor3f(0.0f, 1.0f, 0.0f);
         } else if (this.role.equals("Fox")) {
-            GL11.glColor3f(1.0f, 0.5f, 0.0f); // Orange for Fox
+            GL11.glColor3f(1.0f, 1.0f, 0.0f);
         }
 
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -88,5 +88,12 @@ public class Triangle {
         GL11.glVertex2f(this.xPos - 0.05f, this.yPos - 0.05f);
         GL11.glVertex2f(this.xPos + 0.05f, this.yPos - 0.05f);
         GL11.glEnd();
+    }
+    public boolean checkCollision(Triangle hunter) {
+        float distanceX = this.xPos - hunter.xPos;
+        float distanceY = this.yPos - hunter.yPos;
+        float distanceSquared = distanceX * distanceX + distanceY * distanceY;
+        float collisionDistance = 0.1f;
+        return distanceSquared < (collisionDistance * collisionDistance);
     }
 }

@@ -23,8 +23,8 @@ public class Configuration {
     private final String SERVER_ADDRESS = "localhost";
     private final String MULTICAST_SERVER = "255.255.255.255";
     private final String MULTICAST_GROUP = "230.0.0.1";
-    private final int WIDTH = 800;
-    private final int HEIGHT = 600;
+    private final int WIDTH = 1024;
+    private final int HEIGHT = 720;
     private final float MAX_WINDOW = 1.0f;
     private final String GAME_TITLE = "ChaseTag";
     private final int[] playerKeys = {GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_LEFT, GLFW_KEY_RIGHT};
