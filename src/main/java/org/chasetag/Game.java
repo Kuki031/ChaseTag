@@ -36,8 +36,9 @@ public class Game {
             System.exit(1);
         }
 
-        String myRole = Math.random() < 0.5 ? "Hunter" : "Fox";
+        String myRole = socketHandler.getRole();
         myTriangle = new Triangle(0, 0, myRole);
+
 
         GLFWErrorCallback.createPrint(System.err).set();
 

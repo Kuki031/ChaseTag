@@ -9,7 +9,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastServerThread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -10,17 +10,13 @@ public class ClientHandler implements Runnable {
     private DataOutputStream out;
     private float x = 0, y = 0;
     private boolean running = true;
-    private static String[] roles = {"Hunter", "Fox", "Hunter", "Fox", "Hunter", "Fox"};
     private String role;
-    // counteri kolko ima foxova kolko huntera
-    // ako je counterFox == 1, svaki sljedeci role samo moze bit hunter
     public ClientHandler(Socket socket) {
         this.socket = socket;
         try {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-            int rng = (int) Math.floor(Math.random() * roles.length);
-            role = roles[rng];
+            role = MulticastServerThread.getNumberOfFoxes() == 0 ? "Fox" : "Hunter";
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,9 +27,9 @@ public class ClientHandler implements Runnable {
         buffer.putFloat(x);
         buffer.putFloat(y);
         buffer.putInt(socket.getPort());
-        // Convert role to bytes and store in buffer
+
         byte[] roleBytes = role.getBytes();
-        buffer.put(roleBytes, 0, Math.min(roleBytes.length, 8)); // 8 bytes for role
+        buffer.put(roleBytes, 0, Math.min(roleBytes.length, 8));
         return buffer.array();
     }
 
@@ -68,7 +64,7 @@ public class ClientHandler implements Runnable {
         running = false;
         try {
             socket.close();
-            MulticastServerThread.removeClient(this); // Notify the server to remove this client
+            MulticastServerThread.removeClient(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
