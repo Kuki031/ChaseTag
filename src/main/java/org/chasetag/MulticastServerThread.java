@@ -11,6 +11,16 @@ import java.util.concurrent.Executors;
 public class MulticastServerThread {
     private static final int TCP_PORT = Configuration.getInstance().getTCP_PORT();
     private static List<ClientHandler> clients = new CopyOnWriteArrayList<>();
+    private static int numberOfFoxes = 0;
+    private static int numberOfHunters = 0;
+
+    public static int getNumberOfHunters() {
+        return numberOfHunters;
+    }
+
+    public static int getNumberOfFoxes() {
+        return numberOfFoxes;
+    }
 
     public static List<ClientHandler> getClients() {
         return clients;
@@ -18,11 +28,12 @@ public class MulticastServerThread {
 
     public static void removeClient(ClientHandler clientHandler) {
         clients.remove(clientHandler);
+        if (clientHandler.getRole().equals("Hunter")) numberOfHunters--;
+        else if (clientHandler.getRole().equals("Fox")) numberOfFoxes--;
         notifyClientDisconnection(clientHandler);
     }
 
     private static void notifyClientDisconnection(ClientHandler clientHandler) {
-        // Notify other clients about the disconnection
         try {
             DatagramSocket udpSocket = new DatagramSocket();
             ByteBuffer buffer = ByteBuffer.allocate(4);
@@ -48,6 +59,9 @@ public class MulticastServerThread {
                 Socket clientSocket = serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(clientSocket);
                 clients.add(clientHandler);
+                if (clientHandler.getRole().equals("Hunter")) numberOfHunters++;
+                else if (clientHandler.getRole().equals(("Fox"))) numberOfFoxes++;
+
                 pool.execute(clientHandler);
             }
         } catch (IOException e) {

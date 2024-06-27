@@ -34,6 +34,11 @@ public class Triangle {
         return yPos;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+
     public void processInput(long window) {
         if (glfwGetKey(window, playerKeys[0]) == GLFW_PRESS) {
             // Check if yVelocity + acceleration < maxVelocity => cap velocity at maxVelocity
@@ -72,9 +77,9 @@ public class Triangle {
     }
 
     public void render() {
-        if ("Hunter".equals(role)) {
+        if (this.role.equals("Hunter")) {
             GL11.glColor3f(0.0f, 1.0f, 0.0f); // Green for Hunter
-        } else if ("Fox".equals(role)) {
+        } else if (this.role.equals("Fox")) {
             GL11.glColor3f(1.0f, 0.5f, 0.0f); // Orange for Fox
         }
 

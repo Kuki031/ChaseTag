@@ -15,6 +15,12 @@ public class MulticastClient {
     private int localPort;
     private boolean running = true;
 
+    private String role;
+    public String getRole() {
+        return role;
+    }
+
+
     public MulticastClient(String serverAddress, int tcpPort, int udpPort) throws IOException {
         socket = new Socket(serverAddress, tcpPort);
         out = new DataOutputStream(socket.getOutputStream());
@@ -23,7 +29,6 @@ public class MulticastClient {
         udpSocket = new MulticastSocket(udpPort);
         udpSocket.joinGroup(group);
         localPort = socket.getLocalPort();
-
         new Thread(this::receiveUDP).start();
     }
 
@@ -59,18 +64,18 @@ public class MulticastClient {
                 udpSocket.receive(packet);
                 ByteBuffer byteBuffer = ByteBuffer.wrap(packet.getData(), 0, packet.getLength());
                 if (byteBuffer.remaining() == 4) {
-                    // This is a disconnection packet
+                    //disconnection packet
                     int port = byteBuffer.getInt();
                     players.remove(port);
                 } else {
-                    // This is a position update packet
+                    //position update packet
                     while (byteBuffer.remaining() >= 20) {
                         float x = byteBuffer.getFloat();
                         float y = byteBuffer.getFloat();
                         int port = byteBuffer.getInt();
                         byte[] roleBytes = new byte[8];
                         byteBuffer.get(roleBytes);
-                        String role = new String(roleBytes).trim();
+                        role = new String(roleBytes).trim();
                         players.computeIfAbsent(port, k -> new Triangle(0, 0, role)).setPosition(x, y);
                     }
                 }
