@@ -4,6 +4,7 @@
 <p>- Setup Multicast and Broadcast ✔️</p>
 <p>- Configure TCP for Client => Server communication (4445) ✔️</p>
 <p>- Configure UDP for Server => Client communication (4446) ✔️</p>
+<p>- Configure multicast and broadcast ✔️</p>
 <p>- Check Wireshark if communication is properly setup ✔️</p>
 <p>- Add Multithreading ✔️</p>
 <p>- Render all players on all connected clients ✔️</p>
@@ -20,3 +21,9 @@
 <p>- Detect collisions between Hunters and Fox (Hunters can't collide mutually)✔️</p>
 <p>- Add score for how long someone is a Fox ❌</p>
 <p>- On tag between Hunter and a Fox, swap roles ❌</p>
+<br>
+<h3>Additional features</h3>
+<p>- Randomly spawned static or moving obstacles in arena ❌</p>
+<p>- Player collision with obstacle (stop moving player) ❌</p>
+<p>- Speed-boost ability for Fox player (1-2 seconds) + cooldown ❌</p>
+<p>- Abstract background image ❌</p>
