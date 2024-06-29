@@ -10,16 +10,14 @@ import java.util.Objects;
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Game {
     private long window;
     private MulticastClient socketHandler;
     private Triangle myTriangle;
-
-    public static void main(String[] args) {
-        new Game().run();
-    }
+    private int textureID;
+    private Texture texture = Texture.getInstance();
 
     public void run() {
         init();
@@ -34,7 +32,7 @@ public class Game {
             e.printStackTrace();
             System.exit(1);
         }
-        //cekaj da se klijentu posalje role sa servera
+        // cekaj da se klijentu posalje role sa servera
         while (socketHandler.getRole() == null) {
             try {
                 Thread.sleep(10);
@@ -66,15 +64,24 @@ public class Game {
         glfwShowWindow(window);
 
         GL.createCapabilities();
+
+
+        textureID = texture.loadTexture("src/main/resources/background.jpg"); //Ovdje loadam texturu
+        if (textureID == 0) {
+            throw new RuntimeException("Failed to load background texture");
+        }
     }
 
     private void loop() {
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
             glfwPollEvents();
             myTriangle.processInput(window);
             myTriangle.wrapAroundEdges();
+            texture.renderBackground(textureID); //Ovdje renderam texturu => Parametar TextureID od gore
             render();
+
             socketHandler.sendPosition(myTriangle.getxPos(), myTriangle.getyPos());
             checkCollisions();
             glfwSwapBuffers(window);
@@ -82,14 +89,11 @@ public class Game {
     }
 
     private void render() {
-        glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-
         Map<Integer, Triangle> players = socketHandler.getPlayers();
         for (Triangle triangle : players.values()) {
             triangle.render();
         }
+        myTriangle.render();
     }
 
     private void cleanup() {
@@ -97,7 +101,6 @@ public class Game {
         glfwDestroyWindow(window);
         glfwTerminate();
         Objects.requireNonNull(glfwSetErrorCallback(null)).free();
-
         socketHandler.disconnect();
     }
 
@@ -115,5 +118,8 @@ public class Game {
                 }
             }
         }
+    }
+    public static void main(String[] args) {
+        new Game().run();
     }
 }
