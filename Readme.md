@@ -26,4 +26,4 @@
 <p>- Randomly spawned static or moving obstacles in arena ❌</p>
 <p>- Player collision with obstacle (stop moving player) ❌</p>
 <p>- Speed-boost ability for Fox player (1-2 seconds) + cooldown ❌</p>
-<p>- Abstract background image ❌</p>
+<p>- Abstract moving background ✔️</p>
