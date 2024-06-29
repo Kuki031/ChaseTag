@@ -78,9 +78,9 @@ public class Triangle {
 
     public void render() {
         if (this.role.equals("Hunter")) {
-            GL11.glColor3f(0.0f, 1.0f, 0.0f);
+            GL11.glColor3f(1.0f, 0.0f, 1.0f);
         } else if (this.role.equals("Fox")) {
-            GL11.glColor3f(1.0f, 1.0f, 0.0f);
+            GL11.glColor3f(1.0f, 0.5f, 0.0f);
         }
 
         GL11.glBegin(GL11.GL_TRIANGLES);

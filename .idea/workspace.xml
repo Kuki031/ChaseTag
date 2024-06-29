@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2c47dcd0-859d-4467-9710-d2a440668c46" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,8 +42,12 @@
   "keyToString": {
     "Gradle.chasetag [:Game.main()].executor": "Run",
     "Gradle.chasetag [:MulticastServer.main()].executor": "Run",
-    "git-widget-placeholder": "feature/game__mechanics",
-    "kotlin-language-version-configured": "true"
+    "git-widget-placeholder": "feature/adittions",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Kukac/IdeaProjects/pic",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
   }
 }]]></component>
   <component name="RunManager" selected="Application.Game">
