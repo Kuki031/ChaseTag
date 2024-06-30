@@ -14,6 +14,10 @@ public class Triangle {
     private float yVelocity = 0;
     private float acceleration = 0.0001f;
     private float maxVelocity = 0.02f;
+    private boolean isSpacePressed = false;
+    private int countOfUsedSpeedAbility = 0;
+    private boolean isMoving = false;
+    private float cooldownSeconds = 30.00f;
 
     public Triangle(float xPos, float yPos, String role) {
         this.xPos = xPos;
@@ -43,31 +47,38 @@ public class Triangle {
         if (glfwGetKey(window, playerKeys[0]) == GLFW_PRESS) {
             // Check if yVelocity + acceleration < maxVelocity => stop accelerating at maxVelocity
             yVelocity = Math.min(yVelocity + acceleration, maxVelocity);
+            isMoving = true;
         } else if (yVelocity > 0) {
             // If yVelocity is > 0, decelerate until you reach 0 (stop decelerating at 0)
             yVelocity = Math.max(yVelocity - acceleration, 0);
+            isMoving = false;
         }
 
         if (glfwGetKey(window, playerKeys[1]) == GLFW_PRESS) {
             yVelocity = Math.max(yVelocity - acceleration, -maxVelocity);
+            isMoving = true;
         } else if (yVelocity < 0) {
             yVelocity = Math.min(yVelocity + acceleration, 0);
+            isMoving = false;
         }
 
         if (glfwGetKey(window, playerKeys[2]) == GLFW_PRESS) {
             xVelocity = Math.max(xVelocity - acceleration, -maxVelocity);
+            isMoving = true;
         } else if (xVelocity < 0) {
             xVelocity = Math.min(xVelocity + acceleration, 0);
+            isMoving = false;
         }
 
         if (glfwGetKey(window, playerKeys[3]) == GLFW_PRESS) {
             xVelocity = Math.min(xVelocity + acceleration, maxVelocity);
+            isMoving = true;
         } else if (xVelocity > 0) {
             xVelocity = Math.max(xVelocity - acceleration, 0);
+            isMoving = false;
         }
-
-        this.setPosition(this.getxPos() + xVelocity, this.getyPos() + yVelocity);
     }
+
 
     public void wrapAroundEdges() {
         if (this.xPos < -max_window) this.xPos = max_window;
@@ -76,12 +87,11 @@ public class Triangle {
         if (this.yPos > max_window) this.yPos = -max_window;
     }
 
+
     public void render() {
-        if (this.role.equals("Hunter")) {
-            GL11.glColor3f(1.0f, 0.0f, 1.0f);
-        } else if (this.role.equals("Fox")) {
-            GL11.glColor3f(1.0f, 0.5f, 0.0f);
-        }
+        if (this.role.equals("Hunter")) GL11.glColor3f(1.0f, 0.0f, 1.0f);
+        else if (this.role.equals("Fox")) GL11.glColor3f(1.0f, 0.5f, 0.0f);
+
 
         GL11.glBegin(GL11.GL_TRIANGLES);
         GL11.glVertex2f(this.xPos, this.yPos + 0.05f);
@@ -95,5 +105,26 @@ public class Triangle {
         float distanceSquared = distanceX * distanceX + distanceY * distanceY;
         float collisionDistance = 0.1f;
         return distanceSquared < (collisionDistance * collisionDistance);
+    }
+
+    public void speedBoost(long window) {
+        if (glfwGetKey(window, playerKeys[4]) == GLFW_PRESS && countOfUsedSpeedAbility != 3 && isMoving) {
+            if (!isSpacePressed && this.role.equals("Fox")) {
+                acceleration = 0.001f;
+                isSpacePressed = true;
+                if (isSpacePressed) countOfUsedSpeedAbility++;
+            }
+        } else if (glfwGetKey(window, playerKeys[4]) == GLFW_RELEASE) {
+            isSpacePressed = false;
+            acceleration = 0.0001f;
+        }
+        if (!isSpacePressed) this.setPosition(this.getxPos() + xVelocity, this.getyPos() + yVelocity);
+        if (countOfUsedSpeedAbility == 3) {
+            cooldownSeconds -= 0.01f;
+            if (cooldownSeconds == 0.00f || cooldownSeconds < 0) {
+                countOfUsedSpeedAbility = 0;
+                cooldownSeconds = 30.00f;
+            }
+        }
     }
 }

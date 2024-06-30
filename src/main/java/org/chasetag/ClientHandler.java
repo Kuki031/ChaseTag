@@ -26,6 +26,7 @@ public class ClientHandler implements Runnable {
     }
 
     public byte[] getPositionData() {
+        //pripremi buffer i popuni sa x i y
         ByteBuffer buffer = ByteBuffer.allocate(20);
         buffer.putFloat(x);
         buffer.putFloat(y);
@@ -48,6 +49,7 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
+            //dokle god je client spojen, salji x i y
             while (running) {
                 String message = in.readUTF();
                 if (message.equals("disconnect")) {
@@ -72,6 +74,7 @@ public class ClientHandler implements Runnable {
         running = false;
         try {
             socket.close();
+            //makni thread clienta koji se disconnecto
             MulticastServerThread.removeClient(this);
         } catch (IOException e) {
             e.printStackTrace();
