@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2c47dcd0-859d-4467-9710-d2a440668c46" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Configuration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" afterDir="false" />
     </list>
@@ -23,6 +25,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>

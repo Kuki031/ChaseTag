@@ -78,6 +78,7 @@ public class Game {
             glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
             glfwPollEvents();
             myTriangle.processInput(window);
+            myTriangle.speedBoost(window);
             myTriangle.wrapAroundEdges();
             texture.renderBackground(textureID); //Ovdje renderam texturu => Parametar TextureID od gore
             render();
