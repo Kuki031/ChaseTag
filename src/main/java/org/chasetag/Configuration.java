@@ -27,7 +27,7 @@ public class Configuration {
     private final int HEIGHT = 720;
     private final float MAX_WINDOW = 1.0f;
     private final String GAME_TITLE = "ChaseTag";
-    private final int[] playerKeys = {GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_LEFT, GLFW_KEY_RIGHT, GLFW_KEY_SPACE};
+    private final int[] playerKeys = {GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_LEFT, GLFW_KEY_RIGHT, GLFW_KEY_SPACE, GLFW_KEY_RIGHT_ALT};
 
 
     public int getWIDTH() {

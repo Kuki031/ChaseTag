@@ -18,6 +18,8 @@ public class Game {
     private Triangle myTriangle;
     private int textureID;
     private Texture texture = Texture.getInstance();
+    private String fox = "Fox";
+    private String hunter = "Hunter";
 
     public void run() {
         init();
@@ -32,7 +34,6 @@ public class Game {
             e.printStackTrace();
             System.exit(1);
         }
-        // cekaj da se klijentu posalje role sa servera
         while (socketHandler.getRole() == null) {
             try {
                 Thread.sleep(10);
@@ -66,7 +67,7 @@ public class Game {
         GL.createCapabilities();
 
 
-        textureID = texture.loadTexture("src/main/resources/background.jpg"); //Ovdje loadam texturu
+        textureID = texture.loadTexture("src/main/resources/background.jpg");
         if (textureID == 0) {
             throw new RuntimeException("Failed to load background texture");
         }
@@ -80,7 +81,7 @@ public class Game {
             myTriangle.processInput(window);
             myTriangle.speedBoost(window);
             myTriangle.wrapAroundEdges();
-            texture.renderBackground(textureID); //Ovdje renderam texturu => Parametar TextureID od gore
+            texture.renderBackground(textureID);
             render();
 
             socketHandler.sendPosition(myTriangle.getxPos(), myTriangle.getyPos());
@@ -110,10 +111,10 @@ public class Game {
     }
 
     private void checkCollisions() {
-        if (myTriangle.getRole().equals("Fox")) {
+        if (myTriangle.getRole().equals(fox)) {
             Map<Integer, Triangle> players = socketHandler.getPlayers();
             for (Triangle player : players.values()) {
-                if (player.getRole().equals("Hunter") && myTriangle.checkCollision(player)) {
+                if (player.getRole().equals(hunter) && myTriangle.checkCollision(player)) {
                     System.out.println("Fox has been caught.");
                     break;
                 }

@@ -45,11 +45,9 @@ public class Triangle {
 
     public void processInput(long window) {
         if (glfwGetKey(window, playerKeys[0]) == GLFW_PRESS) {
-            // Check if yVelocity + acceleration < maxVelocity => stop accelerating at maxVelocity
             yVelocity = Math.min(yVelocity + acceleration, maxVelocity);
             isMoving = true;
         } else if (yVelocity > 0) {
-            // If yVelocity is > 0, decelerate until you reach 0 (stop decelerating at 0)
             yVelocity = Math.max(yVelocity - acceleration, 0);
             isMoving = false;
         }

@@ -31,7 +31,6 @@ public class MulticastClient {
         udpSocket = new MulticastSocket(udpPort);
         udpSocket.joinGroup(group);
         localPort = socket.getLocalPort();
-        //dohvati role sa servera
         receiveRoleFromServer();
 
         new Thread(this::receiveUDP).start();
@@ -73,11 +72,9 @@ public class MulticastClient {
                 udpSocket.receive(packet);
                 ByteBuffer byteBuffer = ByteBuffer.wrap(packet.getData(), 0, packet.getLength());
                 if (byteBuffer.remaining() == 4) {
-                    //disconnection packet
                     int port = byteBuffer.getInt();
                     players.remove(port);
                 } else {
-                    //position update packet
                     while (byteBuffer.remaining() >= 20) {
                         float x = byteBuffer.getFloat();
                         float y = byteBuffer.getFloat();
