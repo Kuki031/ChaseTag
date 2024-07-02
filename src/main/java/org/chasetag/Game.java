@@ -111,12 +111,24 @@ public class Game {
     }
 
     private void checkCollisions() {
+        Map<Integer, Triangle> players = socketHandler.getPlayers();
         if (myTriangle.getRole().equals(fox)) {
-            Map<Integer, Triangle> players = socketHandler.getPlayers();
             for (Triangle player : players.values()) {
                 if (player.getRole().equals(hunter) && myTriangle.checkCollision(player)) {
-                    System.out.println("Fox has been caught.");
+                    myTriangle.setHasCollided(true);
                     break;
+                } else {
+                    myTriangle.setHasCollided(false);
+                }
+            }
+        }
+        if (myTriangle.getRole().equals(hunter)) {
+            for(Triangle player : players.values()) {
+                if (player.getRole().equals(fox) && myTriangle.checkCollision(player)) {
+                    myTriangle.setHasCollided(true);
+                    break;
+                } else {
+                    myTriangle.setHasCollided(false);
                 }
             }
         }

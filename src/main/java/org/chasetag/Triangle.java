@@ -17,7 +17,13 @@ public class Triangle {
     private boolean isSpacePressed = false;
     private int countOfUsedSpeedAbility = 0;
     private boolean isMoving = false;
-    private float cooldownSeconds = 30.00f;
+    private float cooldownSeconds = 10.00f;
+    private boolean hasCollided;
+
+
+    public void setHasCollided(boolean hasCollided) {
+        this.hasCollided = hasCollided;
+    }
 
     public Triangle(float xPos, float yPos, String role) {
         this.xPos = xPos;
@@ -28,6 +34,11 @@ public class Triangle {
     public void setPosition(float x, float y) {
         this.xPos = x;
         this.yPos = y;
+    }
+
+    public String setRole(String role) {
+        this.role = role;
+        return role;
     }
 
     public float getxPos() {
@@ -87,16 +98,28 @@ public class Triangle {
 
 
     public void render() {
-        if (this.role.equals("Hunter")) GL11.glColor3f(1.0f, 0.0f, 1.0f);
-        else if (this.role.equals("Fox")) GL11.glColor3f(1.0f, 0.5f, 0.0f);
-
-
+        if (this.role.equals("Hunter")) {
+            if (this.hasCollided) {
+                GL11.glColor3f(0.0f, 0.5f, 0.0f);
+            } else {
+                GL11.glColor3f(1.0f, 0.0f, 1.0f);
+            }
+        }
+        else if (this.role.equals("Fox")) {
+            if (this.hasCollided) {
+                GL11.glColor3f(1.0f, 0.0f, 0.0f);
+            } else {
+                GL11.glColor3f(1.0f, 0.5f, 0.0f);
+            }
+        }
         GL11.glBegin(GL11.GL_TRIANGLES);
         GL11.glVertex2f(this.xPos, this.yPos + 0.05f);
         GL11.glVertex2f(this.xPos - 0.05f, this.yPos - 0.05f);
         GL11.glVertex2f(this.xPos + 0.05f, this.yPos - 0.05f);
         GL11.glEnd();
     }
+
+
     public boolean checkCollision(Triangle hunter) {
         float distanceX = this.xPos - hunter.xPos;
         float distanceY = this.yPos - hunter.yPos;
@@ -121,7 +144,7 @@ public class Triangle {
             cooldownSeconds -= 0.01f;
             if (cooldownSeconds == 0.00f || cooldownSeconds < 0) {
                 countOfUsedSpeedAbility = 0;
-                cooldownSeconds = 30.00f;
+                cooldownSeconds = 10.00f;
             }
         }
     }
