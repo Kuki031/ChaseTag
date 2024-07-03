@@ -153,7 +153,7 @@ public class Triangle implements Castable {
         return distanceSquared < (collisionDistance * collisionDistance);
     }
 
-    public void castSpeedBost(long window) {
+    public void castSpeedBoost(long window) {
         if (glfwGetKey(window, playerKeys[4]) == GLFW_PRESS && countOfUsedSpeedAbility != 3 && isMoving) {
             if (!isSpacePressed && this.role.equals(possibleRoles[1])) {
                 acceleration = 0.001f;
