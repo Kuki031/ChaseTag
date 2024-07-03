@@ -23,6 +23,7 @@
 <p>- On tag between Hunter and a Fox, swap roles ❌</p>
 <br>
 <h3>Additional features</h3>
+<p>- Add fuel depletion for Hunter players ✔️</p>
 <p>- Randomly spawned static or moving obstacles in arena ❌</p>
 <p>- Player collision with obstacle (stop moving player) ❌</p>
 <p>- Speed boost ability for Fox player + cooldown ✔️</p>
