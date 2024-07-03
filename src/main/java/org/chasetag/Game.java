@@ -18,6 +18,8 @@ public class Game {
     private Triangle myTriangle;
     private int textureID;
     private Texture texture = Texture.getInstance();
+    private String fox = "Fox";
+    private String hunter = "Hunter";
 
     public void run() {
         init();
@@ -32,7 +34,6 @@ public class Game {
             e.printStackTrace();
             System.exit(1);
         }
-        // cekaj da se klijentu posalje role sa servera
         while (socketHandler.getRole() == null) {
             try {
                 Thread.sleep(10);
@@ -65,8 +66,7 @@ public class Game {
 
         GL.createCapabilities();
 
-
-        textureID = texture.loadTexture("src/main/resources/background.jpg"); //Ovdje loadam texturu
+        textureID = texture.loadTexture("src/main/resources/background.jpg");
         if (textureID == 0) {
             throw new RuntimeException("Failed to load background texture");
         }
@@ -78,11 +78,11 @@ public class Game {
             glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
             glfwPollEvents();
             myTriangle.processInput(window);
-            myTriangle.speedBoost(window);
+            myTriangle.castSpeedBost(window);
             myTriangle.wrapAroundEdges();
-            texture.renderBackground(textureID); //Ovdje renderam texturu => Parametar TextureID od gore
+            myTriangle.checkFuel();
+            texture.renderBackground(textureID);
             render();
-
             socketHandler.sendPosition(myTriangle.getxPos(), myTriangle.getyPos());
             checkCollisions();
             glfwSwapBuffers(window);
@@ -110,12 +110,24 @@ public class Game {
     }
 
     private void checkCollisions() {
-        if (myTriangle.getRole().equals("Fox")) {
-            Map<Integer, Triangle> players = socketHandler.getPlayers();
+        Map<Integer, Triangle> players = socketHandler.getPlayers();
+        if (myTriangle.getRole().equals(fox)) {
             for (Triangle player : players.values()) {
-                if (player.getRole().equals("Hunter") && myTriangle.checkCollision(player)) {
-                    System.out.println("Fox has been caught.");
+                if (player.getRole().equals(hunter) && myTriangle.checkCollision(player)) {
+                    myTriangle.setHasCollided(true);
                     break;
+                } else {
+                    myTriangle.setHasCollided(false);
+                }
+            }
+        }
+        if (myTriangle.getRole().equals(hunter)) {
+            for(Triangle player : players.values()) {
+                if (player.getRole().equals(fox) && myTriangle.checkCollision(player)) {
+                    myTriangle.setHasCollided(true);
+                    break;
+                } else {
+                    myTriangle.setHasCollided(false);
                 }
             }
         }

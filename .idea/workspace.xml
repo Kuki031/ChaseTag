@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2c47dcd0-859d-4467-9710-d2a440668c46" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Configuration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" afterDir="false" />
     </list>
@@ -41,18 +39,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.chasetag [:Game.main()].executor": "Run",
-    "Gradle.chasetag [:MulticastServer.main()].executor": "Run",
-    "git-widget-placeholder": "feature/adittions",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Kukac/IdeaProjects/pic",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.chasetag [:Game.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.chasetag [:MulticastServer.main()].executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/adittions&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Kukac/IdeaProjects/pic&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.Game">
     <configuration name="Client" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.chasetag.Client" />
