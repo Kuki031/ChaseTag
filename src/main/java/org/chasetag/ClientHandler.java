@@ -39,6 +39,12 @@ public class ClientHandler implements Runnable {
         return role;
     }
 
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+
     private void sendRoleToClient() throws IOException {
         out.writeUTF(role);
         out.flush();
@@ -62,11 +68,6 @@ public class ClientHandler implements Runnable {
             disconnect();
         }
     }
-
-    public Socket getSocket() {
-        return socket;
-    }
-
     public void disconnect() {
         running = false;
         try {

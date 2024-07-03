@@ -84,7 +84,8 @@ public class Game {
             texture.renderBackground(textureID);
             render();
             socketHandler.sendPosition(myTriangle.getxPos(), myTriangle.getyPos());
-            checkCollisions();
+            checkCollisions(fox, hunter);
+            checkCollisions(hunter, fox);
             glfwSwapBuffers(window);
         }
     }
@@ -109,21 +110,11 @@ public class Game {
         glfwSetWindowShouldClose(window, true);
     }
 
-    private void checkCollisions() {
+    private void checkCollisions(String myRole, String oppositeRole) {
         Map<Integer, Triangle> players = socketHandler.getPlayers();
-        if (myTriangle.getRole().equals(fox)) {
+        if (myTriangle.getRole().equals(myRole)) {
             for (Triangle player : players.values()) {
-                if (player.getRole().equals(hunter) && myTriangle.checkCollision(player)) {
-                    myTriangle.setHasCollided(true);
-                    break;
-                } else {
-                    myTriangle.setHasCollided(false);
-                }
-            }
-        }
-        if (myTriangle.getRole().equals(hunter)) {
-            for(Triangle player : players.values()) {
-                if (player.getRole().equals(fox) && myTriangle.checkCollision(player)) {
+                if (player.getRole().equals(oppositeRole) && myTriangle.checkCollision(player)) {
                     myTriangle.setHasCollided(true);
                     break;
                 } else {

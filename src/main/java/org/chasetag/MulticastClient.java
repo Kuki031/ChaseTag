@@ -15,12 +15,7 @@ public class MulticastClient {
     private Map<Integer, Triangle> players = new ConcurrentHashMap<>();
     private int localPort;
     private boolean running = true;
-
     private String role;
-
-    public String getRole() {
-        return role;
-    }
 
     public MulticastClient(String serverAddress, int tcpPort, int udpPort) throws IOException {
         socket = new Socket(serverAddress, tcpPort);
@@ -42,6 +37,9 @@ public class MulticastClient {
 
     public Map<Integer, Triangle> getPlayers() {
         return players;
+    }
+    public String getRole() {
+        return role;
     }
 
     public void sendPosition(float x, float y) {

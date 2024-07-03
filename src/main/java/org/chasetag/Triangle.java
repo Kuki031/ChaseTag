@@ -1,7 +1,6 @@
 package org.chasetag;
 
 import org.lwjgl.opengl.GL11;
-
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Triangle implements Castable {
@@ -36,11 +35,6 @@ public class Triangle implements Castable {
     public void setPosition(float x, float y) {
         this.xPos = x;
         this.yPos = y;
-    }
-
-    public String setRole(String role) {
-        this.role = role;
-        return role;
     }
 
     public float getxPos() {
@@ -100,14 +94,7 @@ public class Triangle implements Castable {
 
     public void render() {
         if (this.role.equals("Hunter")) {
-            if (this.hasCollided) {
-                GL11.glColor3f(0.0f, 0.5f, 0.0f);
-            } else {
-                GL11.glColor3f(1.0f, 0.0f, 1.0f);
-            }
-            if (shouldRunOutOfFuel) {
-                GL11.glColor3f(1.0f, 0.0f, 0.0f);
-            }
+            shouldChangeColors(hasCollided, shouldRunOutOfFuel);
         }
         else if (this.role.equals("Fox")) {
             if (this.hasCollided) {
@@ -123,6 +110,17 @@ public class Triangle implements Castable {
         GL11.glEnd();
     }
 
+    private void shouldChangeColors(boolean collisionDetected, boolean fuelStatus) {
+        if (collisionDetected) {
+            GL11.glColor3f(0.0f, 0.5f, 0.0f);
+        } else {
+            GL11.glColor3f(1.0f, 0.0f, 1.0f);
+        }
+        if (fuelStatus) {
+            GL11.glColor3f(1.0f, 0.0f, 0.0f);
+        }
+    }
+
     public void checkFuel() {
         if (isMoving && hasMovedFor >= litersOfFuel && this.role.equals("Hunter")) {
             shouldRunOutOfFuel = true;
@@ -131,9 +129,9 @@ public class Triangle implements Castable {
         }
     }
 
-    public boolean checkCollision(Triangle hunter) {
-        float distanceX = this.xPos - hunter.xPos;
-        float distanceY = this.yPos - hunter.yPos;
+    public boolean checkCollision(Triangle triangle) {
+        float distanceX = this.xPos - triangle.xPos;
+        float distanceY = this.yPos - triangle.yPos;
         float distanceSquared = distanceX * distanceX + distanceY * distanceY;
         float collisionDistance = 0.1f;
         return distanceSquared < (collisionDistance * collisionDistance);
