@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Triangle {
+public class Triangle implements Castable {
     private float xPos;
     private float yPos;
     private String role;
@@ -19,7 +19,9 @@ public class Triangle {
     private boolean isMoving = false;
     private float cooldownSeconds = 10.00f;
     private boolean hasCollided;
-
+    private int hasMovedFor = 0;
+    private int litersOfFuel = 500;
+    private boolean shouldRunOutOfFuel = false;
 
     public void setHasCollided(boolean hasCollided) {
         this.hasCollided = hasCollided;
@@ -53,9 +55,8 @@ public class Triangle {
         return role;
     }
 
-
     public void processInput(long window) {
-        if (glfwGetKey(window, playerKeys[0]) == GLFW_PRESS) {
+        if (glfwGetKey(window, playerKeys[0]) == GLFW_PRESS && !shouldRunOutOfFuel) {
             yVelocity = Math.min(yVelocity + acceleration, maxVelocity);
             isMoving = true;
         } else if (yVelocity > 0) {
@@ -63,7 +64,7 @@ public class Triangle {
             isMoving = false;
         }
 
-        if (glfwGetKey(window, playerKeys[1]) == GLFW_PRESS) {
+        if (glfwGetKey(window, playerKeys[1]) == GLFW_PRESS && !shouldRunOutOfFuel) {
             yVelocity = Math.max(yVelocity - acceleration, -maxVelocity);
             isMoving = true;
         } else if (yVelocity < 0) {
@@ -71,7 +72,7 @@ public class Triangle {
             isMoving = false;
         }
 
-        if (glfwGetKey(window, playerKeys[2]) == GLFW_PRESS) {
+        if (glfwGetKey(window, playerKeys[2]) == GLFW_PRESS && !shouldRunOutOfFuel) {
             xVelocity = Math.max(xVelocity - acceleration, -maxVelocity);
             isMoving = true;
         } else if (xVelocity < 0) {
@@ -79,15 +80,16 @@ public class Triangle {
             isMoving = false;
         }
 
-        if (glfwGetKey(window, playerKeys[3]) == GLFW_PRESS) {
+        if (glfwGetKey(window, playerKeys[3]) == GLFW_PRESS && !shouldRunOutOfFuel) {
             xVelocity = Math.min(xVelocity + acceleration, maxVelocity);
             isMoving = true;
         } else if (xVelocity > 0) {
             xVelocity = Math.max(xVelocity - acceleration, 0);
             isMoving = false;
         }
+        if (isMoving) hasMovedFor++;
+        if (hasMovedFor != 0 && shouldRunOutOfFuel) hasMovedFor--;
     }
-
 
     public void wrapAroundEdges() {
         if (this.xPos < -max_window) this.xPos = max_window;
@@ -96,13 +98,15 @@ public class Triangle {
         if (this.yPos > max_window) this.yPos = -max_window;
     }
 
-
     public void render() {
         if (this.role.equals("Hunter")) {
             if (this.hasCollided) {
                 GL11.glColor3f(0.0f, 0.5f, 0.0f);
             } else {
                 GL11.glColor3f(1.0f, 0.0f, 1.0f);
+            }
+            if (shouldRunOutOfFuel) {
+                GL11.glColor3f(1.0f, 0.0f, 0.0f);
             }
         }
         else if (this.role.equals("Fox")) {
@@ -119,6 +123,13 @@ public class Triangle {
         GL11.glEnd();
     }
 
+    public void checkFuel() {
+        if (isMoving && hasMovedFor >= litersOfFuel && this.role.equals("Hunter")) {
+            shouldRunOutOfFuel = true;
+        } else if (!isMoving && hasMovedFor == 0 && this.role.equals("Hunter")) {
+            shouldRunOutOfFuel = false;
+        }
+    }
 
     public boolean checkCollision(Triangle hunter) {
         float distanceX = this.xPos - hunter.xPos;
@@ -128,7 +139,7 @@ public class Triangle {
         return distanceSquared < (collisionDistance * collisionDistance);
     }
 
-    public void speedBoost(long window) {
+    public void castSpeedBost(long window) {
         if (glfwGetKey(window, playerKeys[4]) == GLFW_PRESS && countOfUsedSpeedAbility != 3 && isMoving) {
             if (!isSpacePressed && this.role.equals("Fox")) {
                 acceleration = 0.001f;

@@ -66,7 +66,6 @@ public class Game {
 
         GL.createCapabilities();
 
-
         textureID = texture.loadTexture("src/main/resources/background.jpg");
         if (textureID == 0) {
             throw new RuntimeException("Failed to load background texture");
@@ -79,11 +78,11 @@ public class Game {
             glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
             glfwPollEvents();
             myTriangle.processInput(window);
-            myTriangle.speedBoost(window);
+            myTriangle.castSpeedBost(window);
             myTriangle.wrapAroundEdges();
+            myTriangle.checkFuel();
             texture.renderBackground(textureID);
             render();
-
             socketHandler.sendPosition(myTriangle.getxPos(), myTriangle.getyPos());
             checkCollisions();
             glfwSwapBuffers(window);
