@@ -9,7 +9,8 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
-    private float x = 0, y = 0;
+    private float x = 0;
+    private float y = 0;
     private boolean running = true;
     private String role;
     private List<Obstacle> obstacles;
@@ -20,7 +21,7 @@ public class ClientHandler implements Runnable {
         try {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-            role = MulticastServerThread.getNumberOfFoxes() == 0 ? "Fox" : "Hunter";
+            role = MulticastServerThread.getNumberOfFoxes() == 0 ? Triangle.possibleRoles[1] : Triangle.possibleRoles[0];
             sendRoleToClient();
             sendObstaclesToClient();
         } catch (IOException e) {

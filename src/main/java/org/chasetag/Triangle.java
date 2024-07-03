@@ -50,6 +50,13 @@ public class Triangle implements Castable {
         return role;
     }
 
+    public void stopMovingIfCollided() {
+        if (this.hasCollided) {
+            xVelocity = 0;
+            yVelocity = 0;
+        }
+    }
+
     public void processInput(long window) {
         if (glfwGetKey(window, playerKeys[0]) == GLFW_PRESS && !shouldRunOutOfFuel) {
             yVelocity = Math.min(yVelocity + acceleration, maxVelocity);
@@ -123,7 +130,7 @@ public class Triangle implements Castable {
     }
 
     public void checkFuel() {
-        if (isMoving && hasMovedFor >= litersOfFuel && this.role.equals(possibleRoles[0])) {
+        if (isMoving && hasMovedFor >= litersOfFuel && this.role.equals(possibleRoles[0]) && !hasCollided) {
             shouldRunOutOfFuel = true;
         } else if (!isMoving && hasMovedFor == 0 && this.role.equals(possibleRoles[0])) {
             shouldRunOutOfFuel = false;
@@ -133,6 +140,14 @@ public class Triangle implements Castable {
     public boolean checkCollision(Triangle triangle) {
         float distanceX = this.xPos - triangle.xPos;
         float distanceY = this.yPos - triangle.yPos;
+        float distanceSquared = distanceX * distanceX + distanceY * distanceY;
+        float collisionDistance = 0.1f;
+        return distanceSquared < (collisionDistance * collisionDistance);
+    }
+
+    public boolean checkCollision(Obstacle obstacle) {
+        float distanceX = this.xPos - obstacle.getxPos();
+        float distanceY = this.yPos - obstacle.getyPos();
         float distanceSquared = distanceX * distanceX + distanceY * distanceY;
         float collisionDistance = 0.1f;
         return distanceSquared < (collisionDistance * collisionDistance);

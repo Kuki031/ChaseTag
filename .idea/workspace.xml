@@ -8,8 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/MulticastServerThread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/chasetag/Triangle.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

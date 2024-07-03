@@ -84,8 +84,16 @@ public class Game {
             renderObstacles();
             render();
             socketHandler.sendPosition(myTriangle.getxPos(), myTriangle.getyPos());
-            checkCollisions(Triangle.possibleRoles[1], Triangle.possibleRoles[0]);
             checkCollisions(Triangle.possibleRoles[0], Triangle.possibleRoles[1]);
+            checkCollisions(Triangle.possibleRoles[1], Triangle.possibleRoles[0]);
+            checkCollisionWithObstacles();
+
+            boolean hasCollided = checkCollisions(Triangle.possibleRoles[0], Triangle.possibleRoles[1])
+                    || checkCollisions(Triangle.possibleRoles[1], Triangle.possibleRoles[0])
+                    || checkCollisionWithObstacles();
+            myTriangle.setHasCollided(hasCollided);
+
+            myTriangle.stopMovingIfCollided();
             glfwSwapBuffers(window);
         }
     }
@@ -116,19 +124,31 @@ public class Game {
         glfwSetWindowShouldClose(window, true);
     }
 
-    private void checkCollisions(String myRole, String oppositeRole) {
+    private boolean checkCollisions(String myRole, String oppositeRole) {
         Map<Integer, Triangle> players = socketHandler.getPlayers();
+        boolean collided = false;
         if (myTriangle.getRole().equals(myRole)) {
             for (Triangle player : players.values()) {
                 if (player.getRole().equals(oppositeRole) && myTriangle.checkCollision(player)) {
-                    myTriangle.setHasCollided(true);
+                    collided = true;
                     break;
-                } else {
-                    myTriangle.setHasCollided(false);
                 }
             }
         }
+        return collided;
     }
+
+    private boolean checkCollisionWithObstacles() {
+        boolean collided = false;
+        for (Obstacle obstacle : socketHandler.getObstacles()) {
+            if (myTriangle.checkCollision(obstacle)) {
+                collided = true;
+                break;
+            }
+        }
+        return collided;
+    }
+
     public static void main(String[] args) {
         new Game().run();
     }
