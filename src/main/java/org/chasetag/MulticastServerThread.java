@@ -3,6 +3,7 @@ package org.chasetag;
 import java.io.IOException;
 import java.net.*;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -13,10 +14,8 @@ public class MulticastServerThread {
     private static List<ClientHandler> clients = new CopyOnWriteArrayList<>();
     private static int numberOfFoxes = 0;
     private static int numberOfHunters = 0;
-
-    public static int getNumberOfHunters() {
-        return numberOfHunters;
-    }
+    private static List<Obstacle> obstacles = new ArrayList<>();
+    private static int numberOfObstacles = 20;
 
     public static int getNumberOfFoxes() {
         return numberOfFoxes;
@@ -28,9 +27,36 @@ public class MulticastServerThread {
 
     public static void removeClient(ClientHandler clientHandler) {
         clients.remove(clientHandler);
-        if (clientHandler.getRole().equals("Hunter")) numberOfHunters--;
-        else if (clientHandler.getRole().equals("Fox")) numberOfFoxes--;
+        if (clientHandler.getRole().equals(Triangle.possibleRoles[0])) numberOfHunters--;
+        else if (clientHandler.getRole().equals(Triangle.possibleRoles[1])) numberOfFoxes--;
         notifyClientDisconnection(clientHandler);
+    }
+
+    public void startServer() {
+        generateObstacles();
+        ExecutorService pool = Executors.newFixedThreadPool(10);
+
+        try (ServerSocket serverSocket = new ServerSocket(TCP_PORT)) {
+            System.out.println("Server started on port " + TCP_PORT);
+
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                ClientHandler clientHandler = new ClientHandler(clientSocket, obstacles);
+                clients.add(clientHandler);
+                if (clientHandler.getRole().equals(Triangle.possibleRoles[0])) numberOfHunters++;
+                else if (clientHandler.getRole().equals((Triangle.possibleRoles[1]))) numberOfFoxes++;
+
+                pool.execute(clientHandler);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generateObstacles() {
+        for (int i = 0; i < numberOfObstacles; i++) {
+            obstacles.add(new Obstacle());
+        }
     }
 
     private static void notifyClientDisconnection(ClientHandler clientHandler) {
@@ -44,26 +70,6 @@ public class MulticastServerThread {
                     Configuration.getInstance().getUDP_PORT());
             udpSocket.send(packet);
             udpSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void startServer() {
-        ExecutorService pool = Executors.newFixedThreadPool(10);
-
-        try (ServerSocket serverSocket = new ServerSocket(TCP_PORT)) {
-            System.out.println("Server started on port " + TCP_PORT);
-
-            while (true) {
-                Socket clientSocket = serverSocket.accept();
-                ClientHandler clientHandler = new ClientHandler(clientSocket);
-                clients.add(clientHandler);
-                if (clientHandler.getRole().equals("Hunter")) numberOfHunters++;
-                else if (clientHandler.getRole().equals(("Fox"))) numberOfFoxes++;
-
-                pool.execute(clientHandler);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

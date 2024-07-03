@@ -21,6 +21,7 @@ public class Triangle implements Castable {
     private int hasMovedFor = 0;
     private int litersOfFuel = 500;
     private boolean shouldRunOutOfFuel = false;
+    public static String[] possibleRoles = {"Hunter", "Fox"};
 
     public void setHasCollided(boolean hasCollided) {
         this.hasCollided = hasCollided;
@@ -93,10 +94,10 @@ public class Triangle implements Castable {
     }
 
     public void render() {
-        if (this.role.equals("Hunter")) {
+        if (this.role.equals(possibleRoles[0])) {
             shouldChangeColors(hasCollided, shouldRunOutOfFuel);
         }
-        else if (this.role.equals("Fox")) {
+        else if (this.role.equals(possibleRoles[1])) {
             if (this.hasCollided) {
                 GL11.glColor3f(1.0f, 0.0f, 0.0f);
             } else {
@@ -122,9 +123,9 @@ public class Triangle implements Castable {
     }
 
     public void checkFuel() {
-        if (isMoving && hasMovedFor >= litersOfFuel && this.role.equals("Hunter")) {
+        if (isMoving && hasMovedFor >= litersOfFuel && this.role.equals(possibleRoles[0])) {
             shouldRunOutOfFuel = true;
-        } else if (!isMoving && hasMovedFor == 0 && this.role.equals("Hunter")) {
+        } else if (!isMoving && hasMovedFor == 0 && this.role.equals(possibleRoles[0])) {
             shouldRunOutOfFuel = false;
         }
     }
@@ -139,7 +140,7 @@ public class Triangle implements Castable {
 
     public void castSpeedBost(long window) {
         if (glfwGetKey(window, playerKeys[4]) == GLFW_PRESS && countOfUsedSpeedAbility != 3 && isMoving) {
-            if (!isSpacePressed && this.role.equals("Fox")) {
+            if (!isSpacePressed && this.role.equals(possibleRoles[1])) {
                 acceleration = 0.001f;
                 isSpacePressed = true;
                 if (isSpacePressed) countOfUsedSpeedAbility++;

@@ -18,8 +18,7 @@ public class Game {
     private Triangle myTriangle;
     private int textureID;
     private Texture texture = Texture.getInstance();
-    private String fox = "Fox";
-    private String hunter = "Hunter";
+
 
     public void run() {
         init();
@@ -82,10 +81,11 @@ public class Game {
             myTriangle.wrapAroundEdges();
             myTriangle.checkFuel();
             texture.renderBackground(textureID);
+            renderObstacles();
             render();
             socketHandler.sendPosition(myTriangle.getxPos(), myTriangle.getyPos());
-            checkCollisions(fox, hunter);
-            checkCollisions(hunter, fox);
+            checkCollisions(Triangle.possibleRoles[1], Triangle.possibleRoles[0]);
+            checkCollisions(Triangle.possibleRoles[0], Triangle.possibleRoles[1]);
             glfwSwapBuffers(window);
         }
     }
@@ -96,6 +96,12 @@ public class Game {
             triangle.render();
         }
         myTriangle.render();
+    }
+
+    private void renderObstacles() {
+        for (Obstacle obstacle : socketHandler.getObstacles()) {
+            obstacle.render(myTriangle.getRole());
+        }
     }
 
     private void cleanup() {

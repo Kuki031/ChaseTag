@@ -1,8 +1,11 @@
+// MulticastClient.java
 package org.chasetag;
 
 import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,6 +19,12 @@ public class MulticastClient {
     private int localPort;
     private boolean running = true;
     private String role;
+    private List<Obstacle> obstacles = new ArrayList<>();
+    private int numberOfObstacles = 20;
+
+    public String getRole() {
+        return role;
+    }
 
     public MulticastClient(String serverAddress, int tcpPort, int udpPort) throws IOException {
         socket = new Socket(serverAddress, tcpPort);
@@ -27,6 +36,7 @@ public class MulticastClient {
         udpSocket.joinGroup(group);
         localPort = socket.getLocalPort();
         receiveRoleFromServer();
+        receiveObstaclesFromServer();
 
         new Thread(this::receiveUDP).start();
     }
@@ -35,11 +45,20 @@ public class MulticastClient {
         role = in.readUTF();
     }
 
+    private void receiveObstaclesFromServer() throws IOException {
+        for (int i = 0; i < numberOfObstacles; i++) {
+            float x = in.readFloat();
+            float y = in.readFloat();
+            obstacles.add(new Obstacle(x,y));
+        }
+    }
+
     public Map<Integer, Triangle> getPlayers() {
         return players;
     }
-    public String getRole() {
-        return role;
+
+    public List<Obstacle> getObstacles() {
+        return obstacles;
     }
 
     public void sendPosition(float x, float y) {

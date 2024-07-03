@@ -3,6 +3,7 @@ package org.chasetag;
 import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.List;
 
 public class ClientHandler implements Runnable {
     private Socket socket;
@@ -11,14 +12,17 @@ public class ClientHandler implements Runnable {
     private float x = 0, y = 0;
     private boolean running = true;
     private String role;
+    private List<Obstacle> obstacles;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, List<Obstacle> obstacles) {
         this.socket = socket;
+        this.obstacles = obstacles;
         try {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
             role = MulticastServerThread.getNumberOfFoxes() == 0 ? "Fox" : "Hunter";
             sendRoleToClient();
+            sendObstaclesToClient();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,14 +43,16 @@ public class ClientHandler implements Runnable {
         return role;
     }
 
-
-    public Socket getSocket() {
-        return socket;
-    }
-
-
     private void sendRoleToClient() throws IOException {
         out.writeUTF(role);
+        out.flush();
+    }
+
+    private void sendObstaclesToClient() throws IOException {
+        for (Obstacle obstacle : obstacles) {
+            out.writeFloat(obstacle.getxPos());
+            out.writeFloat(obstacle.getyPos());
+        }
         out.flush();
     }
 
@@ -68,6 +74,11 @@ public class ClientHandler implements Runnable {
             disconnect();
         }
     }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
     public void disconnect() {
         running = false;
         try {
