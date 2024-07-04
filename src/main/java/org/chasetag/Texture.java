@@ -88,4 +88,25 @@ public class Texture {
         glEnd();
         glDisable(GL_TEXTURE_2D);
     }
+
+    public void rendergo(int textureID){
+
+        textureOffsetX += textureSpeed;
+        textureOffsetY += textureSpeed;
+        if (textureOffsetX > 1.0f) {
+            textureOffsetX -= 1.0f;
+        }
+        if (textureOffsetY > 1.0f) {
+            textureOffsetY -= 1.0f;
+        }
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 1.0f); glVertex2f(-1.0f, -1.0f);
+        glTexCoord2f(1.0f, 1.0f); glVertex2f(1.0f, -1.0f);
+        glTexCoord2f(1.0f, 0.0f); glVertex2f(1.0f, 1.0f);
+        glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, 1.0f);
+        glEnd();
+    }
 }

@@ -41,6 +41,7 @@ public class Triangle implements Castable {
         this.yPos = y;
     }
 
+
     public float getxPos() {
         return xPos;
     }
@@ -68,11 +69,17 @@ public class Triangle implements Castable {
         }
     }
 
+
+
+
     public void setHasCollided(boolean hasCollided) {
         this.hasCollided = hasCollided;
     }
+    public void incrementNumberOfTags() {
+        numberOfTags++;
+    }
 
-    public boolean isHasAlreadyTagged() {
+        public boolean isHasAlreadyTagged() {
         return hasAlreadyTagged;
     }
     public void setHasAlreadyTagged(boolean hasAlreadyTagged) {

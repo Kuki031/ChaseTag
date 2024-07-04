@@ -21,6 +21,7 @@
 <p>- Detect collisions between Hunters and Fox (Hunters can't collide mutually)✔️</p>
 <p>- Score for how many times the Hunter tagged the Fox ✔️</p>
 <p>- On tag between Hunter and a Fox, swap roles ❌</p>
+<p>- After 5 tags between the Fox and the Hunter gameover image appears on Fox screen, and Fox is disconnected ✔️</p>
 <br>
 <h3>Additional features ✔️</h3>
 <p>- Add fuel depletion for Hunter players ✔️</p>

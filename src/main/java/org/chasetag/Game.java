@@ -2,8 +2,12 @@ package org.chasetag;
 
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
+import org.lwjgl.stb.STBImage;
+import org.lwjgl.system.MemoryStack;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.util.Map;
 import java.util.Objects;
 
@@ -18,7 +22,46 @@ public class Game {
     private Triangle myTriangle;
     private int textureID;
     private Texture texture = Texture.getInstance();
+    private int gameOverTextureID;
+    private boolean gameEnded = false;
+    private int foxTagCount = 0;
 
+    private void displayGameOverImage() {
+        gameOverTextureID = loadTexture("src/main/resources/go.jpg");
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
+        texture.rendergo(gameOverTextureID);
+        glfwSwapBuffers(window);
+    }
+
+    private int loadTexture(String path) {
+        int width, height;
+        ByteBuffer buffer;
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer h = stack.mallocInt(1);
+            IntBuffer comp = stack.mallocInt(1);
+
+            buffer = STBImage.stbi_load(path, w, h, comp, 4);
+            if (buffer == null) {
+                throw new RuntimeException("Failed to load a texture file!" + System.lineSeparator() + STBImage.stbi_failure_reason());
+            }
+            width = w.get();
+            height = h.get();
+        }
+
+        int textureID = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, textureID);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        STBImage.stbi_image_free(buffer);
+
+        return textureID;
+    }
 
     public void run() {
         init();
@@ -71,8 +114,9 @@ public class Game {
         }
     }
 
+
     private void loop() {
-        while (!glfwWindowShouldClose(window)) {
+        while (!glfwWindowShouldClose(window) && !gameEnded) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
             glfwPollEvents();
@@ -93,17 +137,38 @@ public class Game {
             boolean hasCollided = hasCollidedWithFox || hasCollidedWithHunter || hasCollidedWithObstacle;
             myTriangle.setHasCollided(hasCollided);
 
-            if (myTriangle.getRole().equals(Triangle.possibleRoles[0]) && hasCollidedWithFox && !myTriangle.isHasAlreadyTagged()) {
-                myTriangle.numberOfTags++;
-                updateWindowTitle();
+            if (hasCollidedWithHunter && !myTriangle.isHasAlreadyTagged()) {
+                foxTagCount++;
+                updateWindowTitlefox();
                 myTriangle.setHasAlreadyTagged(true);
-            } else if (!hasCollidedWithFox) {
+
+                if (foxTagCount >= 2) {
+                    System.out.println("Fox has been tagged 5 times!");
+                    gameEnded = true;
+                }
+            } else if (!hasCollidedWithHunter) {
                 myTriangle.setHasAlreadyTagged(false);
             }
 
             myTriangle.stopMovingIfCollided();
             glfwSwapBuffers(window);
         }
+        if (gameEnded && myTriangle.getRole().equals(Triangle.possibleRoles[1])) {
+            displayGameOverImage();
+            glfwPollEvents();
+            try {
+                Thread.sleep(3000); // Display for 3 seconds
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            cleanup();
+            System.exit(0);
+        }
+    }
+
+    private void updateWindowTitlefox() {
+        String title = String.format("ChaseTag | Fox Tag Count: %d", foxTagCount);
+        glfwSetWindowTitle(window, title);
     }
 
     private void render() {
