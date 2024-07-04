@@ -19,7 +19,7 @@
 <p>- Separate players into Hunters and Fox (X number of Hunters) ✔️</p>
 <p>- Hunters (Green outline color or just green color), Fox (Orange outline color or just orange color) ✔️</p>
 <p>- Detect collisions between Hunters and Fox (Hunters can't collide mutually)✔️</p>
-<p>- Add score for how long someone is a Fox ❌</p>
+<p>- Score for how many times the Hunter tagged the Fox ✔️</p>
 <p>- On tag between Hunter and a Fox, swap roles ❌</p>
 <br>
 <h3>Additional features ✔️</h3>

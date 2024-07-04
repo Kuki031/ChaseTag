@@ -27,10 +27,8 @@ public class Triangle implements Castable {
     private float threshold = 0.0f;
     private float maxThreshold = 1.0f;
     private boolean isCooldownActive = false;
-
-    public void setHasCollided(boolean hasCollided) {
-        this.hasCollided = hasCollided;
-    }
+    public int numberOfTags = 0;
+    private boolean hasAlreadyTagged = false;
 
     public Triangle(float xPos, float yPos, String role) {
         this.xPos = xPos;
@@ -55,6 +53,10 @@ public class Triangle implements Castable {
         return role;
     }
 
+    public int getNumberOfTags() {
+        return numberOfTags;
+    }
+
     public boolean isIgnoringObstacles() {
         return isIgnoringObstacles;
     }
@@ -64,6 +66,17 @@ public class Triangle implements Castable {
             xVelocity = 0;
             yVelocity = 0;
         }
+    }
+
+    public void setHasCollided(boolean hasCollided) {
+        this.hasCollided = hasCollided;
+    }
+
+    public boolean isHasAlreadyTagged() {
+        return hasAlreadyTagged;
+    }
+    public void setHasAlreadyTagged(boolean hasAlreadyTagged) {
+        this.hasAlreadyTagged = hasAlreadyTagged;
     }
 
     public void processInput(long window) {

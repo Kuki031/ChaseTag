@@ -85,17 +85,22 @@ public class Game {
             renderObstacles();
             render();
             socketHandler.sendPosition(myTriangle.getxPos(), myTriangle.getyPos());
-            checkCollisions(Triangle.possibleRoles[0], Triangle.possibleRoles[1]);
-            checkCollisions(Triangle.possibleRoles[1], Triangle.possibleRoles[0]);
-            checkCollision();
 
-            boolean hasCollided = false;
-            if ( checkCollisions(Triangle.possibleRoles[0], Triangle.possibleRoles[1])
-                    || checkCollisions(Triangle.possibleRoles[1], Triangle.possibleRoles[0])
-                    || checkCollision()) {
-                    hasCollided = true;
-            }
+            boolean hasCollidedWithFox = checkCollisions(Triangle.possibleRoles[0], Triangle.possibleRoles[1]);
+            boolean hasCollidedWithHunter = checkCollisions(Triangle.possibleRoles[1], Triangle.possibleRoles[0]);
+            boolean hasCollidedWithObstacle = checkCollision();
+
+            boolean hasCollided = hasCollidedWithFox || hasCollidedWithHunter || hasCollidedWithObstacle;
             myTriangle.setHasCollided(hasCollided);
+
+            if (myTriangle.getRole().equals(Triangle.possibleRoles[0]) && hasCollidedWithFox && !myTriangle.isHasAlreadyTagged()) {
+                myTriangle.numberOfTags++;
+                updateWindowTitle();
+                myTriangle.setHasAlreadyTagged(true);
+            } else if (!hasCollidedWithFox) {
+                myTriangle.setHasAlreadyTagged(false);
+            }
+
             myTriangle.stopMovingIfCollided();
             glfwSwapBuffers(window);
         }
@@ -150,6 +155,11 @@ public class Game {
             }
         }
         return collided;
+    }
+
+    private void updateWindowTitle() {
+        String title = String.format("ChaseTag | Score (number of tags): " + myTriangle.getNumberOfTags());
+        glfwSetWindowTitle(window, title);
     }
 
     public static void main(String[] args) {
