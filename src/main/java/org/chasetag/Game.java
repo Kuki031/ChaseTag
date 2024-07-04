@@ -80,19 +80,22 @@ public class Game {
             myTriangle.castSpeedBoost(window);
             myTriangle.wrapAroundEdges();
             myTriangle.checkFuel();
+            myTriangle.castIgnoreObstacles(window);
             texture.renderBackground(textureID);
             renderObstacles();
             render();
             socketHandler.sendPosition(myTriangle.getxPos(), myTriangle.getyPos());
             checkCollisions(Triangle.possibleRoles[0], Triangle.possibleRoles[1]);
             checkCollisions(Triangle.possibleRoles[1], Triangle.possibleRoles[0]);
-            checkCollisionWithObstacles();
+            checkCollision();
 
-            boolean hasCollided = checkCollisions(Triangle.possibleRoles[0], Triangle.possibleRoles[1])
+            boolean hasCollided = false;
+            if ( checkCollisions(Triangle.possibleRoles[0], Triangle.possibleRoles[1])
                     || checkCollisions(Triangle.possibleRoles[1], Triangle.possibleRoles[0])
-                    || checkCollisionWithObstacles();
+                    || checkCollision()) {
+                    hasCollided = true;
+            }
             myTriangle.setHasCollided(hasCollided);
-
             myTriangle.stopMovingIfCollided();
             glfwSwapBuffers(window);
         }
@@ -138,10 +141,10 @@ public class Game {
         return collided;
     }
 
-    private boolean checkCollisionWithObstacles() {
+    private boolean checkCollision() {
         boolean collided = false;
         for (Obstacle obstacle : socketHandler.getObstacles()) {
-            if (myTriangle.checkCollision(obstacle)) {
+            if (myTriangle.checkCollision(obstacle) && !myTriangle.isIgnoringObstacles()) {
                 collided = true;
                 break;
             }
