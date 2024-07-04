@@ -25,7 +25,7 @@ public class Triangle implements Castable {
     public static String[] possibleRoles = {"Hunter", "Fox"};
     private boolean isIgnoringObstacles = false;
     private float threshold = 0.0f;
-    private float maxThreshold = 1.0f; // Maximum threshold value
+    private float maxThreshold = 1.0f;
     private boolean isCooldownActive = false;
 
     public void setHasCollided(boolean hasCollided) {

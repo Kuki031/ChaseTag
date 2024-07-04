@@ -1,4 +1,3 @@
-// MulticastClient.java
 package org.chasetag;
 
 import java.io.*;
@@ -92,18 +91,23 @@ public class MulticastClient {
                     int port = byteBuffer.getInt();
                     players.remove(port);
                 } else {
-                    while (byteBuffer.remaining() >= 20) {
+                    while (byteBuffer.hasRemaining()) {
                         float x = byteBuffer.getFloat();
                         float y = byteBuffer.getFloat();
                         int port = byteBuffer.getInt();
                         byte[] roleBytes = new byte[8];
-                        byteBuffer.get(roleBytes);
-                        String receivedRole = new String(roleBytes).trim();
-                        players.computeIfAbsent(port, k -> new Triangle(0, 0, receivedRole)).setPosition(x, y);
+                        byteBuffer.get(roleBytes, 0, 8);
+                        String role = new String(roleBytes).trim();
+
+                        if (port != localPort) {
+                            players.put(port, new Triangle(x, y, role));
+                        } else {
+                            this.role = role;
+                        }
                     }
                 }
             } catch (IOException e) {
-                System.out.println("UDP socket closed.");
+                e.printStackTrace();
             }
         }
     }
