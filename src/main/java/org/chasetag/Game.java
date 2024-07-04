@@ -142,8 +142,7 @@ public class Game {
                 updateWindowTitlefox();
                 myTriangle.setHasAlreadyTagged(true);
 
-                if (foxTagCount >= 2) {
-                    System.out.println("Fox has been tagged 5 times!");
+                if (foxTagCount >= 10) {
                     gameEnded = true;
                 }
             } else if (!hasCollidedWithHunter) {
@@ -157,7 +156,7 @@ public class Game {
             displayGameOverImage();
             glfwPollEvents();
             try {
-                Thread.sleep(3000); // Display for 3 seconds
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
