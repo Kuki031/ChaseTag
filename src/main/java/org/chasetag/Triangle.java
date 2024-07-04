@@ -13,6 +13,7 @@ public class Triangle implements Castable {
     private float yVelocity = 0;
     private float acceleration = 0.0001f;
     private float maxVelocity = 0.02f;
+    private boolean isAltPressed;
     private boolean isSpacePressed = false;
     private int countOfUsedSpeedAbility = 0;
     private boolean isMoving = false;
@@ -22,6 +23,10 @@ public class Triangle implements Castable {
     private int litersOfFuel = 500;
     private boolean shouldRunOutOfFuel = false;
     public static String[] possibleRoles = {"Hunter", "Fox"};
+    private boolean isIgnoringObstacles = false;
+    private float threshold = 0.0f;
+    private float maxThreshold = 1.0f; // Maximum threshold value
+    private boolean isCooldownActive = false;
 
     public void setHasCollided(boolean hasCollided) {
         this.hasCollided = hasCollided;
@@ -48,6 +53,10 @@ public class Triangle implements Castable {
 
     public String getRole() {
         return role;
+    }
+
+    public boolean isIgnoringObstacles() {
+        return isIgnoringObstacles;
     }
 
     public void stopMovingIfCollided() {
@@ -103,8 +112,7 @@ public class Triangle implements Castable {
     public void render() {
         if (this.role.equals(possibleRoles[0])) {
             shouldChangeColors(hasCollided, shouldRunOutOfFuel);
-        }
-        else if (this.role.equals(possibleRoles[1])) {
+        } else if (this.role.equals(possibleRoles[1])) {
             if (this.hasCollided) {
                 GL11.glColor3f(1.0f, 0.0f, 0.0f);
             } else {
@@ -153,7 +161,7 @@ public class Triangle implements Castable {
         return distanceSquared < (collisionDistance * collisionDistance);
     }
 
-    public void castSpeedBost(long window) {
+    public void castSpeedBoost(long window) {
         if (glfwGetKey(window, playerKeys[4]) == GLFW_PRESS && countOfUsedSpeedAbility != 3 && isMoving) {
             if (!isSpacePressed && this.role.equals(possibleRoles[1])) {
                 acceleration = 0.001f;
@@ -167,9 +175,34 @@ public class Triangle implements Castable {
         if (!isSpacePressed) this.setPosition(this.getxPos() + xVelocity, this.getyPos() + yVelocity);
         if (countOfUsedSpeedAbility == 3) {
             cooldownSeconds -= 0.01f;
-            if (cooldownSeconds == 0.00f || cooldownSeconds < 0) {
+            if (cooldownSeconds <= 0.0f) {
                 countOfUsedSpeedAbility = 0;
                 cooldownSeconds = 10.00f;
+            }
+        }
+    }
+
+    public void castIgnoreObstacles(long window) {
+        if (glfwGetKey(window, playerKeys[5]) == GLFW_PRESS && this.role.equals(possibleRoles[1]) && !isCooldownActive) {
+            isIgnoringObstacles = true;
+            if (!isAltPressed) {
+                isAltPressed = true;
+            }
+            threshold += 0.01f;
+            if (threshold >= maxThreshold) {
+                isIgnoringObstacles = false;
+                isCooldownActive = true;
+            }
+        } else if (glfwGetKey(window, playerKeys[5]) == GLFW_RELEASE && this.role.equals(possibleRoles[1])) {
+            isIgnoringObstacles = false;
+            isAltPressed = false;
+        }
+
+        if (isCooldownActive) {
+            threshold -= 0.01f;
+            if (threshold <= 0.0f) {
+                threshold = 0.0f;
+                isCooldownActive = false;
             }
         }
     }
